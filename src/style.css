@@ -40,6 +40,18 @@ body {
     text-align: center;
 }
 
+button {
+    border-radius: 5px;
+    border: 2px solid transparent;
+    background-color: rgb(243, 182, 182);
+    padding-left: 2px;
+    padding-right: 2px;
+}
+
+button:active {
+    border: 2px solid rgb(235, 132, 132);
+}
+
 #new-project {
     padding: 12px;
     padding-left: 20px;
