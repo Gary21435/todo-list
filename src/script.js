@@ -7,7 +7,7 @@ import {
     getProjects,
     getTodosOfCurrent
 } from "./logic/todoManager.js";
-import { displayProject } from "./ui/dom.js";
+import { displayProject, newProjectForm } from "./ui/dom.js";
 
 const newProjButton = document.querySelector("#new-project");
 
@@ -23,6 +23,12 @@ document.addEventListener("click", (e) => {
 });
 
 newProjButton.addEventListener("click", (e) => {
-    const defProject = defaultProject();
-    displayProject(defProject);
+    newProjectForm();
+});
+
+document.addEventListener("click", (e) => {
+    if(e.target.className === "expand-icon") {
+        e.target.style.transition = "transform 0.2s ease-in-out";
+        e.target.style.transform === "rotate(-180deg)" ? e.target.style.transform = "rotate(0deg)" : e.target.style.transform = "rotate(-180deg)";
+    }
 });
