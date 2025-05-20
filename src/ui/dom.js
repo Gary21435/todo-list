@@ -6,15 +6,20 @@ export function displayProject(project) {
 
     let projectHeader = document.createElement("p");
     projectHeader.textContent = project.name;
+    let form = document.createElement("form");
+    form.action = "#";
+    form.appendChild(projectHeader);
 
     let checkbox = document.createElement("input");
     checkbox.type = 'checkbox';
     checkbox.className = 'project-check';
 
     const icons = iconContainer();
-    container.append(checkbox, projectHeader, icons);
+    container.append(checkbox, form, icons);
 
     projects_container.append(container);
+
+    return container;
 }
 
 function makeIcon(path) {
@@ -55,6 +60,10 @@ export function newProjectForm() {
     let container = document.createElement("div");
 
     let projectHeader = document.createElement("input");
+    projectHeader.className = "input-field";
+    let form = document.createElement("form");
+    form.action = "#";
+    form.appendChild(projectHeader);
     projectHeader.placeholder = "Enter project name";
     container.className = "project";
 
@@ -65,9 +74,11 @@ export function newProjectForm() {
     let submit = document.createElement("button");
     submit.className = "submit-btn";
     submit.textContent = "Done";
+    submit.type = "submit";
+    form.appendChild(submit);
 
     const icons = iconContainer();
-    container.append(checkbox, projectHeader, submit, icons);
+    container.append(checkbox, form, icons);
 
     projects_container.appendChild(container);
 }

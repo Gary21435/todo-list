@@ -5,7 +5,7 @@ const projects = [];
 let current_project; // select a project by clicking anywhere on it, which would highlight it with a border?
 
 function defaultProject() {
-    const project = new Project('Make Todo App', '5/18/25', "Make a todo list app using modules and webpack.");
+    const project = new Project('Make Todo App');
     projects.push(project);
     current_project = project;
     return project; // ??

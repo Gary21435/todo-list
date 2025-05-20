@@ -1,6 +1,7 @@
 export class Project {
     constructor(name) {
        Object.assign(this, { name }); 
+       this.id = crypto.randomUUID();
        this.todos = [];
     }
 
