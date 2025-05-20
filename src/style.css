@@ -8,15 +8,18 @@
 body {
     width: 100%;
     height: 100vh;
+    background-color: rgb(240, 161, 161);
 
     display: flex;
     justify-content: space-between;
+    gap: 10px;
 }
 
 .sidebar {
     width: var(--sidebar-width);
     height: 100%;
     background-color: rgb(166, 216, 234);
+    box-shadow: 2px 0px 3px rgba(0, 0, 0, 0.281);
 
     display: flex;
     flex-direction: column;
@@ -28,11 +31,12 @@ body {
     font-size: 50px;
     font-weight: bold;
     color: rgb(206, 86, 86);
-    border: 2px solid rgb(35, 132, 85);
+    border: 2px solid rgb(206, 86, 86);
     border-style: double;
     border-radius: 500px;
     padding: 30px;
     margin-top: 20px;
+    box-shadow: 0px 0px 12px 0px rgba(0, 0, 0, 0.276);
 
     width: 92px;
     height: 90px;
@@ -61,19 +65,20 @@ button:active {
 
     font-size: 20px;
     font-weight: 900;
-    box-shadow: -2px 1px 2px 0px rgb(239, 146, 146);
+    box-shadow: 2px 2px 3px 0px rgba(0, 0, 0, 0.366);
     color: rgb(206, 86, 86);
     cursor: pointer;
 }
 
 #new-project:active {
-    box-shadow: 0px 0px 3px 4px rgb(239, 146, 146);
+    box-shadow: 0px 0px 0px 4px rgb(166, 216, 234);
 }
 
 .projects-container {
     width: calc(100% - var(--sidebar-width));
     height: calc(100%-100px);
     padding-top: 100px;
+    background-color: rgb(240, 161, 161);
 
     display: flex;
     flex-direction: column;
@@ -93,13 +98,13 @@ button:active {
     padding-bottom: 5px;
     border-radius: 10px;
     margin-left: 5%;
+    box-shadow: 2px 3px 3px 0px rgba(0, 0, 0, 0.133);
 
     display: flex;
     gap: 10px;
-
 }
 
-.project>p {
+form>p {
     width: 310px;
 }
 
@@ -116,7 +121,6 @@ input {
     font-size: 24px;
     border-radius: 5px;
     background-color: rgb(170, 222, 204);
-    margin-right: ;
 }
 
 input:focus {
