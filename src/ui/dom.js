@@ -47,11 +47,14 @@ function iconContainer() {
     del.className = "del";
 
     let expand = makeIcon("./icons/expand.svg");
-    expand.className = "expand-icon";
+    expand.className = "expand";
+
+    let add = makeIcon("./icons/add.svg");
+    add.className = "add";
 
     const icons_cont = document.createElement("div");
     icons_cont.className = "icon-container";
-    icons_cont.append(edit, del, expand);
+    icons_cont.append(edit, del, add, expand);
 
     return icons_cont;
 }
@@ -82,3 +85,5 @@ export function newProjectForm() {
 
     projects_container.appendChild(container);
 }
+
+// add new todo

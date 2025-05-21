@@ -2,7 +2,8 @@ todos:
 
 x implement icons showing only when you hover over that project
 x implement delete icon
-- fix editing project name
+x fix editing project name
 - implement adding and deleting todos
+    - new todos will show up under the project with an indentation and yellow background
 - implement expanding to show todos and retracting
 - implement not allowing project name entry if it already exists

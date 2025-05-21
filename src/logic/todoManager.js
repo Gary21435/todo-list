@@ -24,6 +24,12 @@ function setCurrentProject(name) {
     if(project) current_project = project;
 }
 
+function projectCheck(id) {
+    const proj = projects.find(obj => obj.id === id);
+    proj.toggle();
+    console.log("project checked: ", proj);
+}
+
 function addTodo(todo_data) { // todo data will be an object with 3 variables?
     const new_todo = new Todo(...Object.values(todo_data));
     current_project.addTodo(new_todo);
@@ -53,6 +59,7 @@ function deleteProject(id) {
 // function editProject
 
 export {
+    projectCheck,
     getProject,
     deleteProject,
     defaultProject,

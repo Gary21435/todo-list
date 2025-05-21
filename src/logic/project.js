@@ -4,6 +4,11 @@ export class Project {
        this.name = name;
        this.id = crypto.randomUUID();
        this.todos = [];
+       this.complete = false;
+    }
+
+    toggle() {
+        this.complete = !this.complete;
     }
 
     editName(newName) {

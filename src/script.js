@@ -1,5 +1,6 @@
 import { Project } from "./logic/project.js";
 import {
+    projectCheck,
     getProject,
     deleteProject,
     defaultProject,
@@ -36,7 +37,7 @@ newProjButton.addEventListener("click", (e) => {
 
 // Animation for expand icon
 document.addEventListener("click", (e) => {
-    if(e.target.className === "expand-icon") {
+    if(e.target.className === "expand") {
         e.target.style.transition = "transform 0.2s ease-in-out";
         e.target.style.transform === "rotate(-180deg)" ? e.target.style.transform = "rotate(0deg)" : e.target.style.transform = "rotate(-180deg)";
     }
@@ -92,6 +93,13 @@ document.addEventListener("click", (e) => {
     }
 });
 
+// Mark project complete/incomplete
+document.addEventListener("click", (e) => {
+    if(e.target.className === "project-check") {
+        projectCheck(e.target.parentElement.id);
+    }
+});
+
 // Delete a project
 document.addEventListener("click", (e) => {
     if(e.target.className === "del") {
@@ -100,5 +108,14 @@ document.addEventListener("click", (e) => {
         // delete project object from projects array of todoManager
         deleteProject(project.id);
         project.remove();
+    }
+});
+
+// Add a todo
+document.addEventListener("click", (e) => {
+    if(e.target.className === "add") {
+        // set current project
+        // call addtodo of todoManager
+        // set todo properties
     }
 });

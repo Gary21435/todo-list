@@ -104,14 +104,15 @@ button:active {
     gap: 10px;
 }
 
-.edit, .del {
+.edit, .del, .add {
     opacity: 0;
     transition: opacity .2s ease-in-out;
 }
 
 /* .project:hover is .project in its hover state */
 .project:hover .edit,
-.project:hover .del {
+.project:hover .del,
+.project:hover .add {
     opacity: 1;
 }
 
