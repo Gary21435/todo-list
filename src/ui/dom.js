@@ -2,7 +2,10 @@ const projects_container = document.querySelector(".projects-container");
 
 export function displayProject(project) {
     let container = document.createElement("div");
-    container.className = "project";
+    let projectDiv = document.createElement("div"); 
+    projectDiv.appendChild(container);
+    projectDiv.className = "project";
+    container.className = "project-stuff";
 
     let projectHeader = document.createElement("p");
     projectHeader.textContent = project.name;
@@ -17,7 +20,7 @@ export function displayProject(project) {
     const icons = iconContainer();
     container.append(checkbox, form, icons);
 
-    projects_container.append(container);
+    projects_container.append(projectDiv);
 
     return container;
 }
@@ -39,28 +42,34 @@ export function addNodeNextTo(node, type) {
     return newNode;
 }
 
-function iconContainer() {
+function iconContainer(ifTodo) {
     let edit = makeIcon("./icons/edit.svg");
     edit.className = "edit";
 
     let del = makeIcon("./icons/delete.svg");
     del.className = "del";
 
-    let expand = makeIcon("./icons/expand.svg");
-    expand.className = "expand";
-
-    let add = makeIcon("./icons/add.svg");
-    add.className = "add";
-
     const icons_cont = document.createElement("div");
     icons_cont.className = "icon-container";
-    icons_cont.append(edit, del, add, expand);
+    icons_cont.append(edit, del);
+
+    if(!ifTodo) {
+        let expand = makeIcon("./icons/expand.svg");
+        expand.className = "expand";
+        let add = makeIcon("./icons/add.svg");
+        add.className = "add";
+
+        icons_cont.append(add, expand);
+    }
 
     return icons_cont;
 }
 
 export function newProjectForm() {
     let container = document.createElement("div");
+    let project = document.createElement("div")
+    project.appendChild(container);
+    project.className = "project";
 
     let projectHeader = document.createElement("input");
     projectHeader.className = "input-field";
@@ -68,7 +77,7 @@ export function newProjectForm() {
     form.action = "#";
     form.appendChild(projectHeader);
     projectHeader.placeholder = "Enter project name";
-    container.className = "project";
+    container.className = "project-stuff";
 
     let checkbox = document.createElement("input");
     checkbox.type = 'checkbox';
@@ -83,7 +92,72 @@ export function newProjectForm() {
     const icons = iconContainer();
     container.append(checkbox, form, icons);
 
-    projects_container.appendChild(container);
+    projects_container.appendChild(project);
+}
+
+function todoContainer(project) {
+    const todoCont = document.createElement("div");
+    todoCont.className = "todo-container";
+    project.appendChild(todoCont);
+    
+    return todoCont;
+}
+
+function newTodoForm() {
+    //Todo parameters: title, dueDate, description, priority
+    let form = document.createElement("form");
+    form.className = "todo-form";
+
+    let titleInput = document.createElement("input");
+    titleInput.type = "text";
+    titleInput.placeholder = "Title";
+    titleInput.className = "todo-title";
+
+    let descriptionInput = document.createElement("textarea");
+    descriptionInput.placeholder = "Description";
+    descriptionInput.className = "todo-description";
+
+    let dueDateInput = document.createElement("input");
+    dueDateInput.type = "date";
+    dueDateInput.className = "todo-due-date";
+
+    let prioritySelect = document.createElement("select");
+    prioritySelect.className = "todo-priority";
+    for (let i = 1; i <= 3; i++) {
+        let option = document.createElement("option");
+        option.value = i;
+        option.textContent = `${i}`;
+        prioritySelect.appendChild(option);
+    }
+
+    let submitButton = document.createElement("button");
+    submitButton.type = "submit";
+    submitButton.textContent = "Add Todo";
+    submitButton.className = "todo-submit";
+
+    form.append(titleInput, descriptionInput, dueDateInput, prioritySelect, submitButton);
+
+    return form;
 }
 
 // add new todo
+export function addTodoDOM(project) {
+    let lastChild = project.lastChild; //project stuff if there is no todo container
+    let container;
+
+    const newTodo = document.createElement("div");
+    newTodo.className = "todo";
+    const todoForm = newTodoForm(newTodo);
+    const icons = iconContainer(true);
+    newTodo.append(todoForm, icons);
+
+    if(lastChild.className === "project-stuff") {
+        container = todoContainer(project);
+        container.appendChild(newTodo);
+        project.appendChild(container);
+    }
+    else {
+        container = project.lastChild;
+        container.appendChild(newTodo);
+    }
+}

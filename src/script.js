@@ -11,7 +11,7 @@ import {
     getProjects,
     getTodosOfCurrent
 } from "./logic/todoManager.js";
-import { displayProject, newProjectForm, addNodeNextTo } from "./ui/dom.js";
+import { displayProject, newProjectForm, addNodeNextTo, addTodoDOM } from "./ui/dom.js";
 
 const newProjButton = document.querySelector("#new-project");
 
@@ -87,7 +87,7 @@ document.addEventListener("click", (e) => {
 
         // Add a done button
         let done_btn = addNodeNextTo(input, "button");
-        done_btn.textContent = "done";
+        done_btn.textContent = "Done";
         done_btn.className = "submit-btn";
         done_btn.type = "submit"
     }
@@ -115,7 +115,11 @@ document.addEventListener("click", (e) => {
 document.addEventListener("click", (e) => {
     if(e.target.className === "add") {
         // set current project
-        // call addtodo of todoManager
+        // call dom.js addtodo to create new todo form
         // set todo properties
+        const thisProj = e.target.parentNode.parentNode.parentNode;
+        console.log("thisProj: ", thisProj);
+        setCurrentProject(thisProj.id);
+        addTodoDOM(thisProj);
     }
 });

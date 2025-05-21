@@ -50,6 +50,7 @@ button {
     background-color: rgb(243, 182, 182);
     padding-left: 2px;
     padding-right: 2px;
+    cursor: pointer;
 }
 
 button:active {
@@ -89,6 +90,11 @@ button:active {
 }
 
 .project {
+    display: flex;
+    flex-direction: column;
+}
+
+.project-stuff {
     margin: 0px;
     font-size: 24px;
     width: calc(80%);
@@ -110,9 +116,9 @@ button:active {
 }
 
 /* .project:hover is .project in its hover state */
-.project:hover .edit,
-.project:hover .del,
-.project:hover .add {
+.project-stuff:hover .edit,
+.project-stuff:hover .del,
+.project-stuff:hover .add {
     opacity: 1;
 }
 
@@ -154,3 +160,17 @@ img {
 form {
     display: flex;
 }
+
+.todo-container {
+    margin-left: 125px;
+    width: min-content;
+}
+
+.todo-container * {
+    border-radius: 5px;
+}
+
+.todo-form {
+    display: flex;
+}
+

@@ -19,8 +19,8 @@ function newProject(name) {
     return new_project;
 }
 
-function setCurrentProject(name) {
-    const project = projects.find(proj => proj.name === name);
+function setCurrentProject(id) {
+    const project = projects.find(proj => proj.id === id);
     if(project) current_project = project;
 }
 
@@ -30,7 +30,7 @@ function projectCheck(id) {
     console.log("project checked: ", proj);
 }
 
-function addTodo(todo_data) { // todo data will be an object with 3 variables?
+function addTodo(todo_data) { 
     const new_todo = new Todo(...Object.values(todo_data));
     current_project.addTodo(new_todo);
 }
