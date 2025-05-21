@@ -1,5 +1,7 @@
 import { Project } from "./logic/project.js";
 import {
+    getProject,
+    deleteProject,
     defaultProject,
     newProject,
     setCurrentProject,
@@ -41,38 +43,41 @@ document.addEventListener("click", (e) => {
 });
 
 // Name/rename project
-document.addEventListener("submit", () => {
+document.addEventListener("submit", (e) => {
+    e.preventDefault(); // don't submit to #
     const input = document.querySelector(".input-field");
     const p = document.createElement("p");
     p.textContent = input.value;
     p.style.width = "310px";
     input.replaceWith(p);
     p.nextElementSibling.remove();
-
-    // Create the object w/ todoManager's function IF it's a new project: 
+    
     let projArr = getProjects();
-    let lastProj = projArr.at(-1);
+    //let lastProj = projArr.at(-1); // THIS IS WRONG; it's not always the last project
+                                   // Also, this is a SHALLOW COPY!
+                                   // in todoManager, the last one gets changed no matter which you edit
+    
     let thisProj = p.parentElement.parentElement;
+    let editProj = getProject(thisProj.id);
     console.log("thisProj: ", thisProj);
     if (thisProj.id) {
-        lastProj.name = p.textContent;
+        editProj.name = p.textContent;
     }
     else {
-        newProject();
+        // Create the object w/ todoManager's function IF it's a new project: 
+        let newProj = newProject();
         projArr = getProjects();
-        lastProj = projArr.at(-1);
-        thisProj.id = lastProj.id;
-        lastProj.name = p.textContent;
+        thisProj.id = newProj.id;
+        newProj.name = p.textContent;
     }
     console.log(projArr);
 });
 
-// Edit existing project name 
+// Open edit form for existing project
 document.addEventListener("click", (e) => {
     if(e.target.className === "edit") {
-        console.log(e.target);
+
         const p = e.target.parentNode.previousElementSibling.firstChild;
-        console.log(p);
         const input = document.createElement("input");
         input.type = "text";
         input.value = p.textContent;
@@ -84,5 +89,16 @@ document.addEventListener("click", (e) => {
         done_btn.textContent = "done";
         done_btn.className = "submit-btn";
         done_btn.type = "submit"
+    }
+});
+
+// Delete a project
+document.addEventListener("click", (e) => {
+    if(e.target.className === "del") {
+        const project = e.target.parentNode.parentNode; // project is icon-container's parent
+
+        // delete project object from projects array of todoManager
+        deleteProject(project.id);
+        project.remove();
     }
 });

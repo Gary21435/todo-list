@@ -1,7 +1,7 @@
 import { Project } from "./project.js";
 import { Todo } from "./todo.js";
 
-const projects = [];
+let projects = [];
 let current_project; // select a project by clicking anywhere on it, which would highlight it with a border?
 
 function defaultProject() {
@@ -15,6 +15,8 @@ function newProject(name) {
     const new_project = new Project(name);
     projects.push(new_project);
     current_project = new_project;
+
+    return new_project;
 }
 
 function setCurrentProject(name) {
@@ -35,11 +37,24 @@ function getProjects() {
     return [...projects];
 }
 
+function getProject(id) {
+    return projects.find(obj => obj.id === id);
+}
+
 function getTodosOfCurrent() {
     return current_project.giveTodos();
 }
 
+function deleteProject(id) {
+    projects = projects.filter(obj => obj.id !== id);
+    console.log("projects: ", projects);
+}
+
+// function editProject
+
 export {
+    getProject,
+    deleteProject,
     defaultProject,
     newProject,
     setCurrentProject,

@@ -1,8 +1,13 @@
 export class Project {
     constructor(name) {
-       Object.assign(this, { name }); 
+       //Object.assign(this, { name }); 
+       this.name = name;
        this.id = crypto.randomUUID();
        this.todos = [];
+    }
+
+    editName(newName) {
+        this.name = newName;
     }
 
     addTodo(todo) {

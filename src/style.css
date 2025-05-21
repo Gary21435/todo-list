@@ -104,6 +104,17 @@ button:active {
     gap: 10px;
 }
 
+.edit, .del {
+    opacity: 0;
+    transition: opacity .2s ease-in-out;
+}
+
+/* .project:hover is .project in its hover state */
+.project:hover .edit,
+.project:hover .del {
+    opacity: 1;
+}
+
 form>p {
     width: 310px;
 }
@@ -114,6 +125,7 @@ form>p {
 
 input[type="checkbox"] {
     accent-color: rgb(239, 146, 146);
+    cursor: pointer;
 }
 
 input {
