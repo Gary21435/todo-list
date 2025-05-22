@@ -11,7 +11,7 @@ import {
     getProjects,
     getTodosOfCurrent
 } from "./logic/todoManager.js";
-import { displayProject, newProjectForm, addNodeNextTo, addTodoDOM } from "./ui/dom.js";
+import { displayProject, newProjectForm, addNodeNextTo, addTodoDOM, saveTodo } from "./ui/dom.js";
 
 const newProjButton = document.querySelector("#new-project");
 
@@ -46,7 +46,8 @@ document.addEventListener("click", (e) => {
 // Name/rename project
 document.addEventListener("submit", (e) => {
     e.preventDefault(); // don't submit to #
-    const input = document.querySelector(".input-field");
+    if(e.target.className !== "project-form") return;
+    const input = e.target.querySelector(".input-field");
     const p = document.createElement("p");
     p.textContent = input.value;
     p.style.width = "310px";
@@ -59,16 +60,17 @@ document.addEventListener("submit", (e) => {
                                    // in todoManager, the last one gets changed no matter which you edit
     
     let thisProj = p.parentElement.parentElement;
+    console.log("thisProj.id: ", thisProj.id);
     let editProj = getProject(thisProj.id);
     console.log("thisProj: ", thisProj);
-    if (thisProj.id) {
+    if (thisProj.id && editProj) {
         editProj.name = p.textContent;
     }
     else {
         // Create the object w/ todoManager's function IF it's a new project: 
         let newProj = newProject();
         projArr = getProjects();
-        thisProj.id = newProj.id;
+        newProj.id = thisProj.id;
         newProj.name = p.textContent;
     }
     console.log(projArr);
@@ -77,7 +79,6 @@ document.addEventListener("submit", (e) => {
 // Open edit form for existing project
 document.addEventListener("click", (e) => {
     if(e.target.className === "edit") {
-
         const p = e.target.parentNode.previousElementSibling.firstChild;
         const input = document.createElement("input");
         input.type = "text";
@@ -107,7 +108,9 @@ document.addEventListener("click", (e) => {
 
         // delete project object from projects array of todoManager
         deleteProject(project.id);
+        const parentProj = project.parentNode;
         project.remove();
+        parentProj.remove();
     }
 });
 
@@ -122,4 +125,15 @@ document.addEventListener("click", (e) => {
         setCurrentProject(thisProj.id);
         addTodoDOM(thisProj);
     }
+});
+
+// Save a todo
+document.addEventListener("submit", (e) => {
+    const input = e.target.querySelector(".input-field");
+    const p = document.createElement("p");
+    p.textContent = input.value;
+    p.style.width = "310px";
+    // save todo with dom function
+    saveTodo(e.target, p)
+    //input.replaceWith(p);
 });

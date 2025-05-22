@@ -11,6 +11,7 @@ export function displayProject(project) {
     projectHeader.textContent = project.name;
     let form = document.createElement("form");
     form.action = "#";
+    form.className = "project-form";
     form.appendChild(projectHeader);
 
     let checkbox = document.createElement("input");
@@ -88,9 +89,11 @@ export function newProjectForm() {
     submit.textContent = "Done";
     submit.type = "submit";
     form.appendChild(submit);
+    form.className = "project-form";
 
     const icons = iconContainer();
     container.append(checkbox, form, icons);
+    container.id = crypto.randomUUID();
 
     projects_container.appendChild(project);
 }
@@ -111,7 +114,7 @@ function newTodoForm() {
     let titleInput = document.createElement("input");
     titleInput.type = "text";
     titleInput.placeholder = "Title";
-    titleInput.className = "todo-title";
+    titleInput.className = "input-field";
 
     let descriptionInput = document.createElement("textarea");
     descriptionInput.placeholder = "Description";
@@ -135,23 +138,28 @@ function newTodoForm() {
     submitButton.textContent = "Add Todo";
     submitButton.className = "todo-submit";
 
-    form.append(titleInput, descriptionInput, dueDateInput, prioritySelect, submitButton);
+    form.append(titleInput, submitButton, descriptionInput, dueDateInput, prioritySelect);
 
-    return form;
+    return form; 
 }
 
-// add new todo
+// add new todo form
 export function addTodoDOM(project) {
     let lastChild = project.lastChild; //project stuff if there is no todo container
     let container;
+
+    let checkbox = document.createElement("input");
+    checkbox.type = 'checkbox';
+    checkbox.className = 'todo-check';
 
     const newTodo = document.createElement("div");
     newTodo.className = "todo";
     const todoForm = newTodoForm(newTodo);
     const icons = iconContainer(true);
-    newTodo.append(todoForm, icons);
+    newTodo.append(checkbox, todoForm, icons);
+    newTodo.id = crypto.randomUUID();
 
-    if(lastChild.className === "project-stuff") {
+    if(lastChild.className === "project-stuff") { // if there already is a todo
         container = todoContainer(project);
         container.appendChild(newTodo);
         project.appendChild(container);
@@ -161,3 +169,15 @@ export function addTodoDOM(project) {
         container.appendChild(newTodo);
     }
 }
+
+export function saveTodo(todoForm, p) {
+    const project = todoForm.parentNode;
+    const icons = todoForm.nextSibling;
+    todoForm.remove();
+
+    let newForm = document.createElement("form");
+    newForm.className = "todo-form";
+    newForm.appendChild(p);
+
+    project.insertBefore(newForm, icons);
+}   

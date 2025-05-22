@@ -35,6 +35,8 @@ function addTodo(todo_data) {
     current_project.addTodo(new_todo);
 }
 
+// function saveTodo()
+
 function removeTodo(todo_data) {
     current_project.removeTodo(todo_data.title);
 }

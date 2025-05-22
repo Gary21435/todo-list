@@ -92,6 +92,7 @@ button:active {
 .project {
     display: flex;
     flex-direction: column;
+    gap: 5px;
 }
 
 .project-stuff {
@@ -112,7 +113,7 @@ button:active {
 
 .edit, .del, .add {
     opacity: 0;
-    transition: opacity .2s ease-in-out;
+    transition: opacity .1s ease-in-out;
 }
 
 /* .project:hover is .project in its hover state */
@@ -154,6 +155,7 @@ img {
 
 .icon-container {
     display: flex;
+    align-items: center;
     gap: 10px;
 }
 
@@ -168,9 +170,30 @@ form {
 
 .todo-container * {
     border-radius: 5px;
+    background-color: rgb(236, 239, 153);
 }
 
 .todo-form {
     display: flex;
+    align-items: center;
+    font-size: 20px;
+}
+
+.todo-form > input {
+    font-size: inherit;
+}
+
+.todo {
+    display: flex;
+    gap: 5px;
+    padding-left: 5px;
+    padding-right: 5px;
+    box-shadow: 2px 3px 3px 0px rgba(0, 0, 0, 0.133);
+}
+
+.todo:hover .edit,
+.todo:hover .del,
+.todo:hover .add {
+    opacity: 1;
 }
 
