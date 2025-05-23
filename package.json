@@ -14,5 +14,8 @@
     "deploy": "git subtree push --prefix dist origin gh-pages",
     "start": "webpack serve --config webpack.dev.js",
     "build": "webpack --config webpack.prod.js"
+  },
+  "dependencies": {
+    "date-fns": "^4.1.0"
   }
 }

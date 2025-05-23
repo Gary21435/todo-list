@@ -1,17 +1,13 @@
+// webpack.common.js
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const path = require("path");
 
 module.exports = {
-  mode: "development",
   entry: "./src/script.js",
   output: {
-    filename: "main.js",
+    filename: "[name].js", // allows multiple chunks with different names
     path: path.resolve(__dirname, "dist"),
     clean: true,
-  },
-  devtool: "eval-source-map",
-  devServer: {
-    watchFiles: ["./src/index.html"],
   },
   plugins: [
     new HtmlWebpackPlugin({
@@ -33,6 +29,5 @@ module.exports = {
         type: "asset/resource",
       },
     ],
-  }
+  },
 };
-

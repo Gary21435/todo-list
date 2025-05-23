@@ -106,39 +106,49 @@ function todoContainer(project) {
     return todoCont;
 }
 
-function newTodoForm() {
+export function newTodoForm(p, p2, p3, p4) {
     //Todo parameters: title, dueDate, description, priority
     let form = document.createElement("form");
     form.className = "todo-form";
 
-    let titleInput = document.createElement("input");
-    titleInput.type = "text";
-    titleInput.placeholder = "Title";
-    titleInput.className = "input-field";
+    let name = document.createElement("input");
+    name.type = "text";
+    name.placeholder = "Title";
+    name.className = "input-field";
+    name.name = "name";
+    name.value = p ? p.textContent.trimEnd() : "";
 
-    let descriptionInput = document.createElement("textarea");
-    descriptionInput.placeholder = "Description";
-    descriptionInput.className = "todo-description";
+    let description = document.createElement("input");
+    description.placeholder = "Description";
+    description.className = "todo-description";
+    description.name = "description";
+    description.value = p2 ? p2.textContent : "";
 
-    let dueDateInput = document.createElement("input");
-    dueDateInput.type = "date";
-    dueDateInput.className = "todo-due-date";
+    let due = document.createElement("input");
+    due.type = "date";
+    due.className = "todo-due-date";
+    due.name = "due";
+    due.value = p3 ? p3.textContent : "";
 
-    let prioritySelect = document.createElement("select");
-    prioritySelect.className = "todo-priority";
+    let priority = document.createElement("select");
+    priority.className = "todo-priority";
+    let options = ['red', 'green', 'yellow'];
     for (let i = 1; i <= 3; i++) {
         let option = document.createElement("option");
         option.value = i;
+        option.style.backgroundColor = options[i-1];
         option.textContent = `${i}`;
-        prioritySelect.appendChild(option);
+        priority.appendChild(option);
     }
+    priority.name = "priority";
+    priority.value = p4 ? Number(p4.textContent) : null;
 
-    let submitButton = document.createElement("button");
-    submitButton.type = "submit";
-    submitButton.textContent = "Add Todo";
-    submitButton.className = "todo-submit";
+    let submit = document.createElement("button");
+    submit.type = "submit";
+    submit.textContent = "Add Todo";
+    submit.className = "todo-submit";
 
-    form.append(titleInput, submitButton, descriptionInput, dueDateInput, prioritySelect);
+    form.append(name, description, due, priority, submit);
 
     return form; 
 }
@@ -154,7 +164,7 @@ export function addTodoDOM(project) {
 
     const newTodo = document.createElement("div");
     newTodo.className = "todo";
-    const todoForm = newTodoForm(newTodo);
+    const todoForm = newTodoForm();
     const icons = iconContainer(true);
     newTodo.append(checkbox, todoForm, icons);
     newTodo.id = crypto.randomUUID();
@@ -170,14 +180,37 @@ export function addTodoDOM(project) {
     }
 }
 
-export function saveTodo(todoForm, p) {
-    const project = todoForm.parentNode;
-    const icons = todoForm.nextSibling;
-    todoForm.remove();
+// export function saveTodo(todoForm, p) {
+//     const project = todoForm.parentNode;
+//     const icons = todoForm.nextSibling;
+//     todoForm.remove();
+
+//     let newForm = document.createElement("form");
+//     newForm.className = "todo-form";
+//     newForm.appendChild(p);
+
+//     project.insertBefore(newForm, icons);
+// }   
+
+export function saveTodo(form, { input, description, due, priority }) {
+    const project = form.parentNode;
+    const icons = form.nextSibling;
+    form.remove();
 
     let newForm = document.createElement("form");
     newForm.className = "todo-form";
-    newForm.appendChild(p);
+
+    let space = "\xa0\xa0\xa0\xa0";
+    let inputP = document.createElement("p");
+    inputP.textContent = `Name: ${input+space}`;
+    let descriptionP = document.createElement("p");
+    descriptionP.textContent = `Description: ${description+space}`;
+    let dueP = document.createElement("p");
+    dueP.textContent = `Due: ${due+space}`;
+    let priorityP = document.createElement("p");
+    priorityP.textContent = `Priority: ${priority}`;
+
+    newForm.append(inputP, descriptionP, dueP, priorityP);
 
     project.insertBefore(newForm, icons);
-}   
+}

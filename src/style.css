@@ -166,6 +166,10 @@ form {
 .todo-container {
     margin-left: 125px;
     width: min-content;
+
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
 }
 
 .todo-container * {
@@ -183,6 +187,15 @@ form {
     font-size: inherit;
 }
 
+.todo-form>p {
+    width: max-content;
+}
+
+.todo-submit {
+    background-color: rgb(243, 182, 182);
+    width: max-content;
+}
+
 .todo {
     display: flex;
     gap: 5px;
@@ -196,4 +209,7 @@ form {
 .todo:hover .add {
     opacity: 1;
 }
-
+/* 
+option:active {
+    background-color: inherit;
+} */
