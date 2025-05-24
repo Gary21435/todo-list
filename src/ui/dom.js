@@ -57,6 +57,7 @@ function iconContainer(ifTodo) {
     if(!ifTodo) {
         let expand = makeIcon("./icons/expand.svg");
         expand.className = "expand";
+        expand.style.transform = "rotate(-180deg)";
         let add = makeIcon("./icons/add.svg");
         add.className = "add";
 

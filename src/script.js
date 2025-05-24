@@ -104,6 +104,10 @@ document.addEventListener("click", (e) => {
         console.log("why didn't run: ", e.target.parentElement);
         let form;
         if(thisForm.classList.contains("todo-form")) {
+             // set current_project
+            const proj = e.target.parentNode.parentNode.parentNode.parentElement.firstChild; 
+            setCurrentProject(proj.id);
+            
             //get the todo from todoManager
             let thisTodo = getTodo(thisForm.parentElement.id);
             console.log("thisTodo: ", thisTodo);
@@ -161,6 +165,9 @@ document.addEventListener("click", (e) => {
 document.addEventListener("submit", (e) => {
     if(e.target.className !== "todo-form") return;
 
+    const proj = e.target.parentNode.parentNode.parentNode.firstChild;
+    setCurrentProject(proj.id);
+
     const formData = new FormData(e.target);
 
     const input = formData.get('name');
@@ -187,6 +194,28 @@ document.addEventListener("submit", (e) => {
         addTodo({ input, description, dueDate, priority, todoID });
 });
 
+// Expanding/contracting a project's todos
+document.addEventListener("click", (e) => {
+    if(e.target.className === "expand") {
+        // Set current_project
+        const thisProj = e.target.parentNode.parentNode;
+        setCurrentProject(thisProj.id);
+        const todoCont = thisProj.parentNode.querySelector(".todo-container");
+        
+        if(todoCont) {
+
+            if(todoCont.style.display === "none") {
+                todoCont.classList.remove("hide");
+                todoCont.style.display = "flex";
+            }
+            else {
+                todoCont.classList.add("hide");
+                todoCont.style.display = "none";
+            }
+        }
+    }
+
+});
 
 // test localStorage
 function storageAvailable(type) {
