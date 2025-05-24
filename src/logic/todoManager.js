@@ -60,7 +60,18 @@ function deleteProject(id) {
 
 function getTodo(todoID) {
     const todos = current_project.giveTodos();
-    return todos.find(obj => obj.id === todoID);
+    const todo = todos.find(obj => obj.id === todoID);
+    console.log("getTodo returns: ", todo);
+    return todo;
+}
+
+function editTodo(id, { input, description, dueDate, priority }) {
+    const todos = current_project.giveTodos();
+    const todo = todos.find(obj => obj.id === id);
+    console.log("priority", priority);
+    let title = input;
+    Object.assign(todo, { title, description, dueDate, priority });
+    console.log("saved todo: ", todo);
 }
 
 // function editProject
@@ -76,7 +87,8 @@ export {
     removeTodo,
     getProjects,
     getTodosOfCurrent,
-    getTodo
+    getTodo,
+    editTodo
 };
 
 // What would todomanager do?

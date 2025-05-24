@@ -10,14 +10,10 @@ import {
     removeTodo,
     getProjects,
     getTodosOfCurrent,
-    getTodo
+    getTodo,
+    editTodo
 } from "./logic/todoManager.js";
 import { displayProject, newProjectForm, addNodeNextTo, addTodoDOM, saveTodo, newTodoForm } from "./ui/dom.js";
-
-import { format } from 'date-fns';
-
-const formattedDate = format(new Date(), '2025-05-23');
-console.log(formattedDate);
 
 const newProjButton = document.querySelector("#new-project");
 
@@ -95,6 +91,7 @@ document.addEventListener("click", (e) => {
         const thisProj = e.target.parentElement.parentElement;
         const icons = thisProj.lastChild;
         const thisForm = icons.previousElementSibling;
+        console.log(icons);
 
         // Add a done button
         let done_btn = document.createElement("button");
@@ -102,19 +99,28 @@ document.addEventListener("click", (e) => {
         done_btn.className = "submit-btn";
         done_btn.type = "submit"
 
+        
+
         console.log("why didn't run: ", e.target.parentElement);
         let form;
         if(thisForm.classList.contains("todo-form")) {
-            let p2 = p.nextElementSibling;
-            let p3 = p2.nextElementSibling;
-            let p4 = p3.nextElementSibling;
+            //get the todo from todoManager
+            let thisTodo = getTodo(thisForm.parentElement.id);
+            console.log("thisTodo: ", thisTodo);
+            let p2 = thisTodo.description;
+            let p1 = thisTodo.title;
+            console.log("p1111: ", p1);
+            let p3 = thisTodo.dueDate;
+            let p4 = thisTodo.priority;
 
             p.parentNode.remove();
-            form = newTodoForm(p, p2, p3, p4);
-            thisProj.append(form, done_btn);
+            form = newTodoForm(p1, p2, p3, p4);
+            thisProj.insertBefore(form, icons);
         }
-        else
+        else {
+            p.replaceWith(input);
             thisForm.appendChild(done_btn);
+        }
     }
 });
 
@@ -159,7 +165,7 @@ document.addEventListener("submit", (e) => {
 
     const input = formData.get('name');
     const description = formData.get('description');
-    const due = formData.get('due');
+    const dueDate = formData.get('due');
     const priority = formData.get('priority');
 
     // const name = document.createElement("p");
@@ -167,11 +173,46 @@ document.addEventListener("submit", (e) => {
     // name.style.width = "310px";
     // save todo with dom function
     let todo = e.target.parentElement;
-    saveTodo(e.target, {input, description, due, priority});
+    saveTodo(e.target, { input, description, dueDate, priority });
 
     // save todo in logic
     console.log(todo.id);
     let todoID = todo.id;
-    
-    addTodo({input, description, due, priority, todoID});
+
+    const todos = getTodosOfCurrent();
+    if(todos.find(obj => obj.id = todoID)) {
+        editTodo(todoID, { input, description, dueDate, priority });
+    }
+    else
+        addTodo({ input, description, dueDate, priority, todoID });
 });
+
+
+// test localStorage
+function storageAvailable(type) {
+  let storage;
+  try {
+    storage = window[type];
+    const x = "__storage_test__";
+    // storage.setItem(x, x);
+    console.log(storage.getItem(x));
+    // storage.removeItem(x);
+    return true;
+  } catch (e) {
+    return (
+      e instanceof DOMException &&
+      e.name === "QuotaExceededError" &&
+      // acknowledge QuotaExceededError only if there's something already stored
+      storage &&
+      storage.length !== 0
+    );
+  }
+}
+
+if (storageAvailable("localStorage")) {
+  // Yippee! We can use localStorage awesomeness
+  console.log("available");
+} else {
+  // Too bad, no localStorage for us
+  console.log("unavailable");
+}

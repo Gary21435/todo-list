@@ -116,19 +116,20 @@ export function newTodoForm(p, p2, p3, p4) {
     name.placeholder = "Title";
     name.className = "input-field";
     name.name = "name";
-    name.value = p ? p.textContent.trimEnd() : "";
+    name.value = p ? p.trimEnd() : "";
 
     let description = document.createElement("input");
     description.placeholder = "Description";
     description.className = "todo-description";
     description.name = "description";
-    description.value = p2 ? p2.textContent : "";
+    description.value = p2 ? p2 : "";
 
     let due = document.createElement("input");
     due.type = "date";
     due.className = "todo-due-date";
     due.name = "due";
-    due.value = p3 ? p3.textContent : "";
+    due.value = p3 ? p3 : null;
+    console.log("due date! ", p3 ? p3 : "");
 
     let priority = document.createElement("select");
     priority.className = "todo-priority";
@@ -141,7 +142,7 @@ export function newTodoForm(p, p2, p3, p4) {
         priority.appendChild(option);
     }
     priority.name = "priority";
-    priority.value = p4 ? Number(p4.textContent) : null;
+    priority.value = p4 ? Number(p4) : null;
 
     let submit = document.createElement("button");
     submit.type = "submit";
@@ -192,7 +193,7 @@ export function addTodoDOM(project) {
 //     project.insertBefore(newForm, icons);
 // }   
 
-export function saveTodo(form, { input, description, due, priority }) {
+export function saveTodo(form, { input, description, dueDate, priority }) {
     const project = form.parentNode;
     const icons = form.nextSibling;
     form.remove();
@@ -206,7 +207,7 @@ export function saveTodo(form, { input, description, due, priority }) {
     let descriptionP = document.createElement("p");
     descriptionP.textContent = `Description: ${description+space}`;
     let dueP = document.createElement("p");
-    dueP.textContent = `Due: ${due+space}`;
+    dueP.textContent = `Due: ${dueDate+space}`;
     let priorityP = document.createElement("p");
     priorityP.textContent = `Priority: ${priority}`;
 
