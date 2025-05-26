@@ -4,6 +4,19 @@ import { Todo } from "./todo.js";
 let projects = [];
 let current_project; // select a project by clicking anywhere on it, which would highlight it with a border?
 
+function setProjects(projectsArr) {
+    projects = projectsArr.map(project => {
+        const todos = project.todos.map(todo => new Todo(
+            todo.title,
+            todo.description,
+            todo.dueDate,
+            todo.priority,
+            todo.id
+        ));
+        return new Project(project.name, project.id, todos, project.complete);
+    });
+}
+
 function defaultProject() {
     const project = new Project('Make Todo App');
     projects.push(project);
@@ -22,6 +35,7 @@ function newProject(name) {
 function setCurrentProject(id) {
     const project = projects.find(proj => proj.id === id);
     if(project) current_project = project;
+    console.log("current_project: ", project);
 }
 
 function projectCheck(id) {
@@ -58,6 +72,15 @@ function deleteProject(id) {
     console.log("projects: ", projects);
 }
 
+function deleteTodo(todoId, projId) {
+    let proj = projects.find(obj => obj.id === projId);
+    console.log("projects:    ", projects);
+    console.log('proj:     ', proj);
+    console.log("proj.todos: ", proj.todos);
+    proj.removeTodo(todoId);
+    console.log("proj.todos: ", proj.todos);
+}
+
 function getTodo(todoID) {
     const todos = current_project.giveTodos();
     const todo = todos.find(obj => obj.id === todoID);
@@ -77,9 +100,11 @@ function editTodo(id, { input, description, dueDate, priority }) {
 // function editProject
 
 export {
+    setProjects,
     projectCheck,
     getProject,
     deleteProject,
+    deleteTodo,
     defaultProject,
     newProject,
     setCurrentProject,

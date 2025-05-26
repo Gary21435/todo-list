@@ -3,6 +3,7 @@ import {
     projectCheck,
     getProject,
     deleteProject,
+    deleteTodo,
     defaultProject,
     newProject,
     setCurrentProject,
@@ -11,16 +12,29 @@ import {
     getProjects,
     getTodosOfCurrent,
     getTodo,
-    editTodo
+    editTodo,
+    setProjects
 } from "./logic/todoManager.js";
-import { displayProject, newProjectForm, addNodeNextTo, addTodoDOM, saveTodo, newTodoForm } from "./ui/dom.js";
+import { displayProject,
+    newProjectForm,
+    addNodeNextTo,
+    addTodoDOM,
+    saveTodo,
+    newTodoForm,
+    buildFromLocalStorageDOM 
+} from "./ui/dom.js";
 
 const newProjButton = document.querySelector("#new-project");
 
 // Make default project to start things off
-const defProject = defaultProject();
-const defProjectDOM = displayProject(defProject);
-defProjectDOM.id = defProject.id;
+if(localStorage.getItem('data')) {
+    console.log("IS THIS THE CULPRIT???????????");
+    buildFromLocalStorage();
+}
+
+// const defProject = defaultProject();
+// const defProjectDOM = displayProject(defProject);
+// defProjectDOM.id = defProject.id;
 
 // Check/uncheck a project/todo
 document.addEventListener("click", (e) => {
@@ -75,7 +89,8 @@ document.addEventListener("submit", (e) => {
         newProj.id = thisProj.id;
         newProj.name = p.textContent;
     }
-    console.log(projArr);
+    console.log("project Array: ", projArr);
+    saveData();
 });
 
 // Open edit form for existing project
@@ -105,7 +120,7 @@ document.addEventListener("click", (e) => {
         let form;
         if(thisForm.classList.contains("todo-form")) {
              // set current_project
-            const proj = e.target.parentNode.parentNode.parentNode.parentElement.firstChild; 
+            const proj = e.target.parentNode.parentNode.parentNode.parentNode.firstChild; 
             setCurrentProject(proj.id);
             
             //get the todo from todoManager
@@ -138,14 +153,26 @@ document.addEventListener("click", (e) => {
 // Delete a project
 document.addEventListener("click", (e) => {
     if(e.target.className === "del") {
-        const project = e.target.parentNode.parentNode; // project is icon-container's parent
-
+        const thing = e.target.parentNode.parentNode; // project is icon-container's parent
+        if(thing.className === "project-stuff") {
+            const parentProj = thing.parentNode;
+            setCurrentProject(parentProj);
+            deleteProject(thing.id);
+            thing.remove();
+            parentProj.remove();
+        }
+        else if (thing.className === "todo") {
+            const thisProj = thing.parentNode.parentNode.firstChild;
+            setCurrentProject(thisProj);
+            console.log("thisProj.id:     ", thisProj.id);
+            deleteTodo(thing.id, thisProj.id);
+            thing.remove();
+        }
         // delete project object from projects array of todoManager
-        deleteProject(project.id);
-        const parentProj = project.parentNode;
-        project.remove();
-        parentProj.remove();
+        
+        
     }
+    saveData();
 });
 
 // Add a todo
@@ -154,10 +181,10 @@ document.addEventListener("click", (e) => {
         // set current project
         // call dom.js addtodo to create new todo form
         // set todo properties
-        const thisProj = e.target.parentNode.parentNode.parentNode;
+        const thisProj = e.target.parentNode.parentNode.parentNode.firstChild;
         console.log("thisProj: ", thisProj);
         setCurrentProject(thisProj.id);
-        addTodoDOM(thisProj);
+        addTodoDOM(thisProj.parentNode);
     }
 });
 
@@ -167,6 +194,7 @@ document.addEventListener("submit", (e) => {
 
     const proj = e.target.parentNode.parentNode.parentNode.firstChild;
     setCurrentProject(proj.id);
+    console.log("proj to be set current when submit todo form: ", proj)
 
     const formData = new FormData(e.target);
 
@@ -187,11 +215,13 @@ document.addEventListener("submit", (e) => {
     let todoID = todo.id;
 
     const todos = getTodosOfCurrent();
-    if(todos.find(obj => obj.id = todoID)) {
+    if(todos.find(obj => obj.id === todoID)) {
         editTodo(todoID, { input, description, dueDate, priority });
     }
     else
         addTodo({ input, description, dueDate, priority, todoID });
+
+    saveData();
 });
 
 // Expanding/contracting a project's todos
@@ -218,30 +248,33 @@ document.addEventListener("click", (e) => {
 });
 
 // test localStorage
-function storageAvailable(type) {
-  let storage;
-  try {
-    storage = window[type];
-    const x = "__storage_test__";
-    // storage.setItem(x, x);
-    console.log(storage.getItem(x));
-    // storage.removeItem(x);
-    return true;
-  } catch (e) {
-    return (
-      e instanceof DOMException &&
-      e.name === "QuotaExceededError" &&
-      // acknowledge QuotaExceededError only if there's something already stored
-      storage &&
-      storage.length !== 0
-    );
-  }
+// function storeData() {
+//     let type = 'localStorage';
+//     let storage;
+//     storage = window[type];
+//     const x = "__storage_test__";
+//     // storage.setItem(x, x);
+//     console.log(storage.getItem(x));
+//     // storage.removeItem(x);
+//     return true;
+// }
+
+function saveData() {
+    const projArr = getProjects();
+    // let type = 'localStorage';
+    // let storage;
+    // storage = window[type];
+    
+    localStorage.setItem('data', JSON.stringify(projArr));
 }
 
-if (storageAvailable("localStorage")) {
-  // Yippee! We can use localStorage awesomeness
-  console.log("available");
-} else {
-  // Too bad, no localStorage for us
-  console.log("unavailable");
+function buildFromLocalStorage() {
+    const data = localStorage.getItem('data');
+    const data_parsed = JSON.parse(data);
+    console.log("data: ", data);
+    console.log("parsed data: ", data_parsed);
+    console.log("data_parsed is array? ", Array.isArray(data_parsed));
+    
+    setProjects(data_parsed);
+    buildFromLocalStorageDOM(data_parsed);
 }

@@ -1,10 +1,10 @@
 export class Project {
-    constructor(name) {
+    constructor(name, id=crypto.randomUUID(), todos=[], complete = false) {
        //Object.assign(this, { name }); 
        this.name = name;
-       this.id = crypto.randomUUID();
-       this.todos = [];
-       this.complete = false;
+       this.id = id;
+       this.todos = todos;
+       this.complete = complete;
     }
 
     toggle() {
@@ -20,8 +20,8 @@ export class Project {
         // function to push in UI 
     }
 
-    removeTodo(title) {
-        const index = this.todos.indexOf(this.todos.find(obj => obj.title === title)); // remove todo by title
+    removeTodo(id) {
+        const index = this.todos.indexOf(this.todos.find(obj => obj.id === id)); // remove todo by title
         this.todos.splice(index, 1);
     }
 

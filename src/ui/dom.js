@@ -99,6 +99,80 @@ export function newProjectForm() {
     projects_container.appendChild(project);
 }
 
+// Make from data in localStorage
+export function buildFromLocalStorageDOM(data) {
+    
+    data.map(project => {
+        let container = document.createElement("div");
+        container.className = "project-stuff";
+        container.id = project.id;
+        let proj = document.createElement("div")
+        proj.appendChild(container);
+        proj.className = "project";
+        
+        let form = document.createElement("form");
+        form.className = "project-form";
+        const name = document.createElement("p");
+        name.textContent = project.name;
+        console.log("proj.name: ", project.name);
+        form.appendChild(name);
+
+        let checkbox = document.createElement("input");
+        checkbox.type = 'checkbox';
+        checkbox.className = 'project-check';
+
+        const icons = iconContainer();
+        container.append(checkbox, form, icons);
+
+        projects_container.appendChild(proj);
+
+        const todoCont = todoContainer(proj);
+
+        project.todos.map(todo => {
+            // const todoForm = makeTodoFormFromData(todo);
+            let todoForm = document.createElement("form");
+            todoForm.className = "todo-form";
+            
+            let checkbox = document.createElement("input");
+            checkbox.type = 'checkbox';
+            checkbox.className = 'todo-check';
+            let newTodo = document.createElement("div");
+            newTodo.className = "todo";
+            newTodo.id = todo.id;
+            const icons = iconContainer(true);
+            newTodo.append(checkbox, todoForm, icons);
+            todoCont.appendChild(newTodo);
+            const input = todo.title;
+            const description = todo.description;
+            const dueDate = todo.dueDate;
+            const priority = todo.priority;
+            // saveTodo(todoForm, { todo. });
+            saveTodo(todoForm, { input, description, dueDate, priority })
+        });
+    });
+}
+
+function makeTodoFormFromData(todo) {
+    let form = document.createElement("form");
+    form.className = "todo-form";
+
+    let name = document.createElement("p");
+    name.textContent = todo.title;
+
+    let description = document.createElement("p");
+    description.textContent = todo.description;
+
+    let due = document.createElement("p");
+    due.textContent = todo.dueDate;
+
+    let priority = document.createElement("p");
+    priority.priority;
+    
+    form.append(name, description, due, priority);
+
+    return form; 
+}
+
 function todoContainer(project) {
     const todoCont = document.createElement("div");
     todoCont.className = "todo-container";
